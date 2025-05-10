@@ -66,3 +66,38 @@ def get_connected_graph(num_nodes: int, num_edges: int = None) -> nx.Graph:
 
     return G
 
+
+def get_connected_multigraph(num_nodes: int, num_edges: int = None) -> nx.MultiGraph:
+    """
+    Randomly generate a connected, undirected and unweighted multigraph.
+    """
+
+    if num_nodes < 2:
+        raise ValueError("Need at least 2 nodes for a meaningful graph.")
+
+    G = nx.MultiGraph()
+    G.add_nodes_from(range(num_nodes))
+
+    # Step 1: Create a spanning tree to ensure connectivity
+    nodes = list(G.nodes)
+    random.shuffle(nodes)
+    for i in range(1, num_nodes):
+        u = nodes[i]
+        v = nodes[random.randint(0, i - 1)]
+        G.add_edge(u, v)
+
+    # Making sure the number of edges is valid
+    min_edges = num_nodes - 1
+    if num_edges is None:
+        num_edges = min_edges + random.randint(1, num_nodes)  # slightly more edges
+    elif num_edges < min_edges:
+        raise ValueError("num_edges must be at least num_nodes - 1 to keep the graph connected.")
+
+    # Step 2: Add remaining random edges (allowing parallel edges)
+    remaining_edges = num_edges - min_edges
+    while remaining_edges > 0:
+        u, v = random.sample(range(num_nodes), 2)
+        G.add_edge(u, v)
+        remaining_edges -= 1
+
+    return G
