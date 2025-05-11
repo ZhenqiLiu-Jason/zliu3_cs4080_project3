@@ -3,6 +3,14 @@ import random
 
 
 def karger_min_cut(original_graph: nx.Graph) -> int:
+    """
+    Implements Karger's algorithm to find the min-cut of a graph.
+
+    Select an edge uniformly at random and contract the two nodes
+    into a single super node. Do this until there are only two nodes
+    left in the graph. The resulting number of edges is the min-cut.
+    """
+
     # Work on a MultiGraph copy to preserve parallel edges during contraction
     G = nx.MultiGraph(original_graph)
 
