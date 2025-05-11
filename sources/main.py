@@ -1,4 +1,6 @@
+import os
 import networkx as nx
+import numpy as np
 
 from savefigure import save_plot
 from get_graph import get_connected_graph, get_connected_multigraph
@@ -43,3 +45,29 @@ def find_average_karger_accuracy(num_graphs: int, num_nodes: int) -> float:
         total_trials += find_karger_accuracy(G)
     return total_trials / num_graphs
 
+
+
+# Start the main execution
+# The experiment parameters
+n_values = np.arange(4, 100)
+num_graphs = 20
+
+
+# Run the experiments
+average_accuracy = np.array([find_average_karger_accuracy(num_graphs, n) for n in n_values])
+
+
+# Create the directory, including any intermediate directories
+os.makedirs('../images', exist_ok=True)
+
+# Plot the results
+save_plot(
+    traces = {
+        "Experimental": (n_values, average_accuracy, '-')
+    },
+    filename='../images/karger_average_accuracy.png',
+    xlabel=r'Number of Nodes (n)',
+    ylabel=r'Average Trials to Find Min-Cut',
+    title="Karger's Algorithm: Experimental vs. Theoretical",
+    y_bot_lim=0,
+    annotation=False)
