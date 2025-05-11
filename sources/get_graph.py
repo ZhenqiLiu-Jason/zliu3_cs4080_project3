@@ -2,18 +2,6 @@ import networkx as nx
 import random
 
 
-def to_multigraph(G: nx.Graph) -> nx.MultiGraph:
-    """
-    Convert a simple graph to a multigraph that allows for
-    parallel edges.
-    """
-
-    MG = nx.MultiGraph()
-    MG.add_nodes_from(G.nodes)
-    MG.add_edges_from(G.edges)
-    return MG
-
-
 def get_connected_graph(num_nodes: int, num_edges: int = None) -> nx.Graph:
     """
     Generate a connected, undirected, unweighted simple graph.
