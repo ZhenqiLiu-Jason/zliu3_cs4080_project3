@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from adjustText import adjust_text
 
 # Function to save plots
-def save_plot(traces, filename, xlabel, ylabel, title, y_top_lim=None, y_bot_lim=None, annotation=True):
+def save_plot(traces, filename, xlabel, ylabel, title, y_top_lim=None, y_bot_lim=None, annotation=True, log_scale=None):
     """
     traces contain the following:
 
@@ -32,6 +32,15 @@ def save_plot(traces, filename, xlabel, ylabel, title, y_top_lim=None, y_bot_lim
 
     # Automatically adjust text annotations to avoid overlap
     adjust_text(texts)
+
+    # Apply log scale if requested
+    if log_scale == 'x':
+        plt.xscale('log')
+    elif log_scale == 'y':
+        plt.yscale('log')
+    elif log_scale == 'both':
+        plt.xscale('log')
+        plt.yscale('log')
 
     # Adjust the vertical axis limits
     plt.ylim(top=y_top_lim, bottom=y_bot_lim)

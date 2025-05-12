@@ -49,7 +49,7 @@ def find_average_karger_accuracy(num_graphs: int, num_nodes: int) -> float:
 
 # Start the main execution
 # The experiment parameters
-n_values = np.arange(4, 100)
+n_values = np.arange(4, 30)
 num_graphs = 20
 
 
@@ -69,5 +69,5 @@ save_plot(
     xlabel=r'Number of Nodes (n)',
     ylabel=r'Average Trials to Find Min-Cut',
     title="Karger's Algorithm: Experimental vs. Theoretical",
-    y_bot_lim=0,
-    annotation=False)
+    annotation=False,
+    log_scale='y')
