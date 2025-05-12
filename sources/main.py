@@ -49,13 +49,16 @@ def find_average_karger_accuracy(num_graphs: int, num_nodes: int) -> float:
 
 # Start the main execution
 # The experiment parameters
-n_values = np.arange(4, 30)
-num_graphs = 20
+n_values = np.arange(4, 50)
+num_graphs = 200
 
 
 # Run the experiments
 average_accuracy = np.array([find_average_karger_accuracy(num_graphs, n) for n in n_values])
 
+# Comparison plots
+theory1 = 0.3 * n_values
+theory2 = (n_values * (n_values - 1) / 2) * np.log(n_values)
 
 # Create the directory, including any intermediate directories
 os.makedirs('../images', exist_ok=True)
@@ -63,7 +66,9 @@ os.makedirs('../images', exist_ok=True)
 # Plot the results
 save_plot(
     traces = {
-        "Experimental": (n_values, average_accuracy, '-')
+        "Experimental": (n_values, average_accuracy, '-'),
+        r'$\frac{3n}{10}$': (n_values, theory1, '--'),
+        r'$\frac{n(n - 1)}{2} \cdot \ln(n)$': (n_values, theory2, '-')
     },
     filename='../images/karger_average_accuracy.png',
     xlabel=r'Number of Nodes (n)',
