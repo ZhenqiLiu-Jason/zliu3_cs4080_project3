@@ -83,6 +83,6 @@ save_plot(
     filename='../images/karger_average_accuracy_log_scale.png',
     xlabel=r'Number of Nodes (n)',
     ylabel=r'Average Trials to Find Min-Cut',
-    title="Karger's Algorithm: Experimental vs. Theoretical (Log Scale)",
+    title="Karger's Algorithm: Experimental vs. Theoretical",
     annotation=False,
     log_scale='y')
