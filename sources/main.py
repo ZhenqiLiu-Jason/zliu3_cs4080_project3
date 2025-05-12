@@ -67,12 +67,22 @@ os.makedirs('../images', exist_ok=True)
 save_plot(
     traces = {
         "Experimental": (n_values, average_accuracy, '-'),
-        r'$\frac{3n}{10}$': (n_values, theory1, '--'),
-        r'$\frac{n(n - 1)}{2} \cdot \ln(n)$': (n_values, theory2, '-')
+        r'$\frac{3n}{10}$': (n_values, theory1, '--')
     },
     filename='../images/karger_average_accuracy.png',
     xlabel=r'Number of Nodes (n)',
     ylabel=r'Average Trials to Find Min-Cut',
     title="Karger's Algorithm: Experimental vs. Theoretical",
+    annotation=False)
+
+save_plot(
+    traces = {
+        "Experimental": (n_values, average_accuracy, '-'),
+        r'$\frac{n(n - 1)}{2} \cdot \ln(n)$': (n_values, theory2, '-')
+    },
+    filename='../images/karger_average_accuracy_log_scale.png',
+    xlabel=r'Number of Nodes (n)',
+    ylabel=r'Average Trials to Find Min-Cut',
+    title="Karger's Algorithm: Experimental vs. Theoretical (Log Scale)",
     annotation=False,
     log_scale='y')
