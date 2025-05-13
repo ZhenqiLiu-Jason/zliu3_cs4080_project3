@@ -89,3 +89,46 @@ def get_connected_multigraph(num_nodes: int, num_edges: int = None) -> nx.MultiG
         remaining_edges -= 1
 
     return G
+
+
+def get_barbell_graph(num_nodes: int, bridge_edges: int = 1) -> nx.Graph:
+    """
+    Generates a barbell-like graph:
+    - Two cliques of equal size
+    - A few edges connecting them (forming the bridge)
+
+    Parameters:
+        num_nodes: total number of nodes
+        bridge_edges: number of edges connecting the two cliques
+
+    Returns:
+        A connected NetworkX Graph with a narrow min-cut
+    """
+
+    if num_nodes < 4:
+        raise ValueError("num_nodes should be at least 4 for a barbell graph.")
+
+    half = num_nodes // 2
+    G = nx.Graph()
+
+    # Add first clique
+    left = range(half)
+    G.add_nodes_from(left)
+    for i in left:
+        for j in left:
+            if i < j:
+                G.add_edge(i, j)
+
+    # Add second clique
+    right = range(half, num_nodes)
+    G.add_nodes_from(right)
+    for i in right:
+        for j in right:
+            if i < j:
+                G.add_edge(i, j)
+
+    # Add bridge edges (randomly connect left to right)
+    bridge_pairs = random.sample([(u, v) for u in left for v in right], bridge_edges)
+    G.add_edges_from(bridge_pairs)
+
+    return G
