@@ -3,7 +3,7 @@ import networkx as nx
 import numpy as np
 
 from savefigure import save_plot
-from get_graph import get_connected_graph, get_connected_multigraph
+from get_graph import get_connected_graph, get_connected_multigraph, get_barbell_graph
 from karger_algo import karger_min_cut, repeated_karger_min_cut
 
 
@@ -24,7 +24,7 @@ def find_karger_accuracy(G: nx.Graph) -> int:
     return trials
 
 
-def find_average_karger_accuracy(num_graphs: int, num_nodes: int) -> float:
+def find_average_karger_accuracy(num_graphs: int, num_nodes: int, get_graph) -> float:
     """
     Find the average amount of trials needed to run karger before it
     find the right min-cut value for graphs with the specified amount
@@ -40,7 +40,7 @@ def find_average_karger_accuracy(num_graphs: int, num_nodes: int) -> float:
     for _ in range(num_graphs):
 
         # Generate a random graph each time to avoid bias
-        G = get_connected_graph(num_nodes)
+        G = get_graph(num_nodes)
 
         total_trials += find_karger_accuracy(G)
     return total_trials / num_graphs
@@ -50,11 +50,12 @@ def find_average_karger_accuracy(num_graphs: int, num_nodes: int) -> float:
 # Start the main execution
 # The experiment parameters
 n_values = np.arange(4, 50)
-num_graphs = 200
+num_graphs = 300
 
 
 # Run the experiments
-average_accuracy = np.array([find_average_karger_accuracy(num_graphs, n) for n in n_values])
+average_accuracy = np.array([find_average_karger_accuracy(num_graphs, n, get_connected_graph) for n in n_values])
+average_barbell_accurace = np.array([find_average_karger_accuracy(num_graphs, n, get_barbell_graph) for n in n_values])
 
 # Comparison plots
 theory1 = 0.3 * n_values
@@ -66,7 +67,8 @@ os.makedirs('../images', exist_ok=True)
 # Plot the results
 save_plot(
     traces = {
-        "Experimental": (n_values, average_accuracy, '-'),
+        "Experimental(Random)": (n_values, average_accuracy, '-'),
+        'Experimental(Barbell)': (n_values, average_barbell_accurace, '-'),
         r'$\frac{3n}{10}$': (n_values, theory1, '--')
     },
     filename='../images/karger_average_accuracy.png',
@@ -77,7 +79,8 @@ save_plot(
 
 save_plot(
     traces = {
-        "Experimental": (n_values, average_accuracy, '-'),
+        "Experimental(Random)": (n_values, average_accuracy, '-'),
+        'Experimental(Barbell)': (n_values, average_barbell_accurace, '-'),
         r'$\frac{n(n - 1)}{2} \cdot \ln(n)$': (n_values, theory2, '-')
     },
     filename='../images/karger_average_accuracy_log_scale.png',
