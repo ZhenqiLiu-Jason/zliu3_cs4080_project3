@@ -1,4 +1,5 @@
 import networkx as nx
+import numpy as np
 import random
 
 
@@ -91,7 +92,7 @@ def get_connected_multigraph(num_nodes: int, num_edges: int = None) -> nx.MultiG
     return G
 
 
-def get_barbell_graph(num_nodes: int, bridge_edges: int = 1) -> nx.Graph:
+def get_barbell_graph(num_nodes: int, bridge_edges: int = None) -> nx.Graph:
     """
     Generates a barbell-like graph:
     - Two cliques of equal size
@@ -107,6 +108,10 @@ def get_barbell_graph(num_nodes: int, bridge_edges: int = 1) -> nx.Graph:
 
     if num_nodes < 4:
         raise ValueError("num_nodes should be at least 4 for a barbell graph.")
+
+    # Default value for the bridge edges if none is given
+    if bridge_edges is None:
+        bridge_edges = int(np.log(num_nodes))
 
     half = num_nodes // 2
     G = nx.Graph()
